@@ -1,0 +1,31 @@
+﻿
+<Window x:Class="LibraryWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Book List" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="booksDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True"
+                  ItemsSource="{Binding}" IsReadOnly="True" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Title" Binding="{Binding title}" Width="*"/>
+                <DataGridTextColumn Header="Author" Binding="{Binding authorName}" Width="*"/>
+                <DataGridTextColumn Header="Published" Binding="{Binding publishedDate, StringFormat=\{0:yyyy-MM-dd\}}" Width="*"/>
+                <DataGridTextColumn Header="ISBN" Binding="{Binding isbn}" Width="*"/>
+                <DataGridTextColumn Header="Available" Binding="{Binding availableCopies}" Width="*"/>
+                <DataGridTemplateColumn Header="Action" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Name="btnBorrow" Click="btnBorrow_Click" Content="Borrow" Tag="{Binding bookId}"/>
+                                <Button Name="btnReturn" Click="btnReturn_Click" Content="Return" Margin="5,0,0,0" Tag="{Binding bookId}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
