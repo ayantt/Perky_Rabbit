@@ -1,0 +1,121 @@
+﻿@using LibraryWeb.VM;
+@model BookDetailVM[]
+
+@{
+    ViewData["Title"] = "Book List";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Book List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="~/css/adminlte.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Book List</h3>
+                </div>
+                <div class="card-body">
+                    <table id="booksTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Published</th>
+                                <th>ISBN</th>
+                                <th>Available</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var book in Model)
+                            {
+                                <tr>
+                                    <td>@book.title</td>
+                                    <td>@book.authorName</td>
+                                    <td>@book.publishedDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@book.isbn</td>
+                                    <td>@book.availableCopies</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary borrow-btn" data-id="@book.bookId" data-value="@book.availableCopies">Borrow</button>
+                                        <button type="button" class="btn btn-primary return-btn" data-id="@book.bookId">Return</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/jquery.dataTables.js"></script>
+    <script src="~/js/dataTables.bootstrap4.js"></script>
+    <script src="~/js/adminlte.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#booksTable').DataTable({
+                "pageLength": 10,
+                "autoWidth": false
+            });
+
+            $('#booksTable').on('click', '.borrow-btn', function () {
+                var bookId = $(this).data('id');
+                var isAvailable = $(this).data('value');
+
+                if (isAvailable = 'Y') { 
+                    $.ajax({
+                        url: '/home/BorrowBook',
+                        type: 'POST',
+                        data: { id: bookId },
+                        success: function (response) {
+                            window.location.reload();
+                            alert('Book borrowed successfully!');
+                        },
+                        error: function () {
+                            alert('Error performing the action.');
+                        }
+                    });
+                } else {
+                    alert('Book is not available.');
+                }
+            });
+
+            $('#booksTable').on('click', '.return-btn', function () {
+                var bookId = $(this).data('id');
+
+                $.ajax({
+                    url: '/home/ReturnBook',
+                    type: 'POST',
+                    data: { id: bookId },
+                    success: function (response) {
+                        if(response.res == '0')
+                        {
+                            window.location.reload();
+                            alert('Book returned successfully!');
+                        }
+                        else {
+                            alert('Book not borrowed!');
+                        }                            
+                    },
+                    error: function () {
+                        alert('Something went wrong');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

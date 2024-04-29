@@ -1,0 +1,67 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Log in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="~/css/icheck-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/adminlte.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+    @model LibraryWeb.VM.LoginVM
+    
+    <div class="login-box">
+        <div class="login-logo">
+            <a><b>Library</b>Web</a>
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Login to start your session</p>
+
+                <form action="LoginCheck" method="post">
+                    <div class="input-group mb-3">
+                        <input type="email" id="username" name="Username" class="form-control" placeholder="Email" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" id="password" name="Password" class="form-control" placeholder="Password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="input-group mb-3">
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </div>
+                </form>
+                @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(m => m.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/adminlte.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+</body>
+</html>
