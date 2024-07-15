@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)--
 --
 -- Host: localhost    Database: librarydb
 -- ------------------------------------------------------
@@ -170,7 +170,7 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getbookdetails`()
-begin
+begin
 	select BookId,	
 		Title,
 		AuthorName,	
@@ -179,7 +179,7 @@ begin
 		case when AvailableCopies > 0 then 'Y' else 'N' end  AvailableCopies
 	from books b 
 	inner join authors a 
-	where B.AuthorID = A.AuthorId;
+	where B.AuthorID = A.AuthorId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
